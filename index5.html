@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Notes</title>
+    <link rel="stylesheet" href="index5.css">
+</head>
+<script>
+    const genRanHex = size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+    var data = []
+    if (localStorage.getItem('data1')) {
+        p = localStorage.getItem('data1');
+        data = JSON.parse(p);
+    }
+    console.log(data)
+    var t = ""
+    const ele = document.getElementById("notes");
+    data.map(d => {
+        t += `<div class="notebox"  ><div class="clrr" style="background-color:${d.color}"  ></div><div class="hash">#${d.hash}</div><hr/><div class="notetxt"><p>${d.text}</p></div> </div>`
+    })       
+    document.getElementById('notes').innerHTML = t;
+    function submit(clr) {
+        var c = document.getElementById('txt1')
+        data.push({
+            hash: genRanHex(6),
+            color: clr,
+            text: c.value
+        })
+        const dta = JSON.stringify(data);
+        localStorage.setItem('data1', dta);
+        window.location.reload(false)
+    }
+    function deleteit() {
+        data.pop();
+        const dta = JSON.stringify(data);
+        localStorage.setItem('data1', dta);
+        window.location.reload(false)
+    }
+</script>
+<body>
+    <div class="nav">
+        <div class="colors">
+            <div class="red sq"></div>
+            <div class="blue sq"></div>
+            <div class="green sq"></div>
+            <div class="black sq"></div>
+        </div>
+        <div class="opt" style="padding:10px;height: 20px;">
+            <div class="add" onclick="document.getElementById('apnamodal').style.visibility = 'visible';"><i class="fa-sharp fa-solid fa-plus"></i></div>
+            <div class="delete" onclick="deleteit()"><i class="fa-solid fa-trash"></i></div>
+        </div>
+    </div>
+    <div class="appmodal" id="apnamodal">
+        <div class="modal">
+            <div class="box"><textarea name="txt1" id="txt1" cols="30" rows="10" placeholder=" NOTE :Select your fav colour Note"></textarea></div>
+            <div class="clr" style="background-color: grey;">
+                <div class="red sq" onclick="submit('red')"></div>
+                <div class="blue sq" onclick="submit('blue')"></div>
+                <div class="green sq" onclick="submit('green')"></div>
+                <div class="black sq" onclick="submit('black')"></div>
+            </div>
+        </div>
+    </div>
+<div class="notes" id="notes">
+    </div>
+</body>
+
+</html>
